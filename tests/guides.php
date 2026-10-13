@@ -309,6 +309,19 @@ $lock->get();
 check('sync: only one at a time', throws(fn () => $sync->syncAll(), 'already running'));
 $lock->release();
 
+// Run as root (cron) with storage owned by the web user: synced files must end up the web user's.
+if (function_exists('posix_geteuid') && posix_geteuid() === 0 && ($web = posix_getpwnam('www-data')) !== false) {
+    chown($tmp.'/storage/app', $web['uid']);
+    $sync->syncRepo($host->fresh()->forceFill(['repo' => 'myhost/host-guides']));
+    $copy = (string) GuideSync::directory($host->fresh());
+    $owners = [fileowner(GuideSync::root()), fileowner($copy)];
+    foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($copy, FilesystemIterator::SKIP_DOTS)) as $item) {
+        $owners[] = $item->getOwner();
+    }
+    check('sync as root: files belong to the storage owner', array_unique($owners) === [$web['uid']], json_encode(array_unique($owners)));
+    chown($tmp.'/storage/app', 0);
+}
+
 EggRule::query()->create(['egg_id' => 1, 'mode' => 'off']);
 check('egg rules are read', GuideCatalog::ruleFor(1) === ['mode' => 'off', 'folder' => null] && GuideCatalog::ruleFor(2) === null);
 
