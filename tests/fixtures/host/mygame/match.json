@@ -1,0 +1,1 @@
+{ "name": "My Game", "eggs": ["My Custom Egg"], "images": ["ghcr.io/myhost/mygame"], "extra": true }

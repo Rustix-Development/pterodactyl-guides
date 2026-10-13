@@ -1,0 +1,10 @@
+{
+  "name": "Minecraft",
+  "tags": ["minecraft"],
+  "eggs": ["Paper", "Vanilla Minecraft"],
+  "framework": {
+    "values": {
+      "paper": "Paper"
+    }
+  }
+}

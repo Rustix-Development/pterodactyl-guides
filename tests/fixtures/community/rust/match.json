@@ -1,0 +1,13 @@
+{
+  "name": "Rust",
+  "tags": ["rust"],
+  "eggs": ["Rust"],
+  "images": ["ghcr.io/pterodactyl/games:rust"],
+  "framework": {
+    "variable": "FRAMEWORK",
+    "values": {
+      "oxide": "Oxide",
+      "carbon": "Carbon"
+    }
+  }
+}

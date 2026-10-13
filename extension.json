@@ -1,0 +1,46 @@
+{
+    "$schema": "./node_modules/@pterodactyl/sdk/manifest.schema.json",
+    "id": "guides",
+    "name": "Server Guides",
+    "version": "1.0.0",
+    "description": "A Guides tab on every server with help articles for its game and mod framework, synced from GitHub repos the community writes together.",
+    "author": "RustixDev",
+    "icon": "book-open",
+    "requires": {
+        "panel": "^2.0.0-dev",
+        "sdk": ">=2.0.0-beta.4 <3.0",
+        "php": "^8.3"
+    },
+    "provider": "RustixDev\\Guides\\GuidesProvider",
+    "ui": {
+        "entry": "dist/client.js",
+        "mode": "native",
+        "prefix": "rxgd",
+        "screens": [
+            {
+                "id": "guides",
+                "area": "server",
+                "path": "guides",
+                "permission": [
+                    "ext.guides.view"
+                ],
+                "when": {
+                    "runtime": true
+                },
+                "nav": {
+                    "label": "Guides",
+                    "icon": "book-open"
+                }
+            },
+            {
+                "id": "admin",
+                "area": "admin",
+                "path": "guides",
+                "nav": {
+                    "label": "Guides",
+                    "icon": "book-open"
+                }
+            }
+        ]
+    }
+}

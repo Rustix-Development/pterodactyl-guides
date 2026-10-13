@@ -1,0 +1,129 @@
+@import 'tailwindcss/theme.css' layer(theme) prefix(rxgd);
+@import 'tailwindcss/utilities.css' layer(utilities) prefix(rxgd);
+@import '@pterodactyl/sdk/theme.css';
+@source './**/*.{ts,tsx}';
+
+/*
+ * Guide text. The HTML comes from the panel's Markdown renderer, so it has plain tags
+ * without classes; these rules give them the panel's look from its theme variables.
+ */
+.rxgd-prose {
+    color: var(--foreground);
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    overflow-wrap: anywhere;
+}
+.rxgd-prose > :first-child {
+    margin-top: 0;
+}
+.rxgd-prose > :last-child {
+    margin-bottom: 0;
+}
+.rxgd-prose :is(h1, h2, h3, h4, h5, h6) {
+    font-family: var(--font-header, inherit);
+    font-weight: 600;
+    line-height: 1.3;
+    margin: 1.6em 0 0.6em;
+}
+.rxgd-prose h1 {
+    font-size: 1.5rem;
+}
+.rxgd-prose h2 {
+    font-size: 1.25rem;
+    padding-bottom: 0.3em;
+    border-bottom: 1px solid var(--border);
+}
+.rxgd-prose h3 {
+    font-size: 1.0625rem;
+}
+.rxgd-prose :is(h4, h5, h6) {
+    font-size: 1rem;
+}
+.rxgd-prose :is(p, ul, ol, blockquote, pre, .rxgd-table, hr) {
+    margin: 0 0 1em;
+}
+.rxgd-prose :is(ul, ol) {
+    padding-left: 1.5em;
+}
+.rxgd-prose ul {
+    list-style: disc;
+}
+.rxgd-prose ol {
+    list-style: decimal;
+}
+.rxgd-prose li + li {
+    margin-top: 0.25em;
+}
+.rxgd-prose li > :is(ul, ol) {
+    margin: 0.25em 0 0;
+}
+.rxgd-prose li:has(> input[type='checkbox']) {
+    list-style: none;
+    margin-left: -1.25em;
+}
+.rxgd-prose a {
+    color: var(--primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+.rxgd-prose a:hover {
+    text-decoration-thickness: 2px;
+}
+.rxgd-prose strong {
+    font-weight: 600;
+}
+.rxgd-prose code {
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.875em;
+    background: var(--muted);
+    border-radius: calc(var(--radius) * 0.6);
+    padding: 0.1em 0.3em;
+}
+.rxgd-prose pre {
+    background: var(--sunken, var(--muted));
+    border: 1px solid var(--border);
+    border-radius: calc(var(--radius) * 0.8);
+    padding: 0.75em 1em;
+    overflow-x: auto;
+    line-height: 1.5;
+}
+.rxgd-prose pre code {
+    background: none;
+    padding: 0;
+    font-size: 0.8125rem;
+    overflow-wrap: normal;
+    white-space: pre;
+}
+.rxgd-prose blockquote {
+    border-left: 3px solid var(--border);
+    padding-left: 1em;
+    color: var(--muted-foreground);
+}
+.rxgd-prose hr {
+    border: 0;
+    border-top: 1px solid var(--border);
+}
+.rxgd-prose img {
+    max-width: 100%;
+    height: auto;
+    border-radius: calc(var(--radius) * 0.8);
+    border: 1px solid var(--border);
+}
+.rxgd-prose .rxgd-table {
+    overflow-x: auto;
+}
+.rxgd-prose table {
+    border-collapse: collapse;
+    font-size: 0.875rem;
+    min-width: 100%;
+}
+.rxgd-prose :is(th, td) {
+    border: 1px solid var(--border);
+    padding: 0.4em 0.7em;
+    text-align: left;
+    vertical-align: top;
+}
+.rxgd-prose th {
+    background: var(--muted);
+    font-weight: 600;
+}

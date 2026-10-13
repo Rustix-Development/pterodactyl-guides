@@ -1,0 +1,11 @@
+{
+    "description": "A Guides tab on every server with help articles for its game and mod framework, synced from GitHub repos the community writes together.",
+    "autoload": {
+        "psr-4": {
+            "RustixDev\\Guides\\": "src/"
+        }
+    },
+    "config": {
+        "autoloader-suffix": "GuidesExtension"
+    }
+}

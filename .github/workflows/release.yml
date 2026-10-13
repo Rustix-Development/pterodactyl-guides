@@ -1,0 +1,44 @@
+name: Release
+
+# Run from the Actions tab (or push a v* tag). The release is tagged
+# v<version> from extension.json.
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+      - name: Read the version from extension.json
+        run: |
+          VERSION=$(node -p "require('./extension.json').version")
+          if [ "$GITHUB_REF_TYPE" = tag ]; then test "v$VERSION" = "$GITHUB_REF_NAME"; fi
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+      - name: Package
+        run: |
+          FILES="extension.json composer.json dist src LICENSE README.md CHANGELOG.md"
+          for dir in routes database resources; do [ -d "$dir" ] && FILES="$FILES $dir"; done
+          zip -r "guides-$VERSION.pteroext" $FILES
+      - name: Release notes
+        run: envsubst '${VERSION}' < .github/release-notes.md > release-notes.md
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ env.VERSION }}
+          target_commitish: ${{ github.sha }}
+          name: Server Guides ${{ env.VERSION }}
+          body_path: release-notes.md
+          files: guides-${{ env.VERSION }}.pteroext
