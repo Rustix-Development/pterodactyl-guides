@@ -2,7 +2,7 @@
     "$schema": "./node_modules/@pterodactyl/sdk/manifest.schema.json",
     "id": "guides",
     "name": "Server Guides",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "A Guides tab on every server with help articles for its game and mod framework, synced from GitHub repos the community writes together.",
     "author": "RustixDev",
     "icon": "book-open",

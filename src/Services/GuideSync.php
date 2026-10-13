@@ -91,6 +91,7 @@ class GuideSync
     {
         $root = self::root();
         File::ensureDirectoryExists($root, 0750);
+        self::matchStorageOwner($root);
         $archive = $root.DIRECTORY_SEPARATOR.'download-'.Str::lower(Str::random(16)).'.zip';
         $name = Str::lower(Str::random(20));
         $target = $root.DIRECTORY_SEPARATOR.$name;
@@ -100,6 +101,7 @@ class GuideSync
             $this->source->download($repo->repo, $repo->branch, $repo->token, $archive);
             $revision = ArchiveExtractor::revision($archive);
             $problems = $this->extractor->extract($archive, $target);
+            self::matchStorageOwner($target);
             $parsed = $this->parser->parse($target);
             $problems = array_slice([...$problems, ...$parsed['problems']], 0, self::MAX_PROBLEMS);
 
@@ -146,6 +148,40 @@ class GuideSync
             if (is_file($archive)) {
                 @unlink($archive);
             }
+        }
+    }
+
+    /**
+     * The panel's scheduler usually runs from root's crontab, while the web server
+     * reads the synced copy as its own user. Files written by root would then be
+     * unreadable to the panel, so hand them to whoever owns storage/app.
+     */
+    public static function matchStorageOwner(string $path): void
+    {
+        if (! function_exists('posix_geteuid') || posix_geteuid() !== 0 || ! file_exists($path)) {
+            return;
+        }
+        $owner = @fileowner(storage_path('app'));
+        $group = @filegroup(storage_path('app'));
+        if ($owner === false || $group === false || $owner === 0) {
+            return;
+        }
+
+        $paths = [$path];
+        if (is_dir($path)) {
+            $items = new \RecursiveIteratorIterator(
+                new \RecursiveDirectoryIterator($path, \FilesystemIterator::SKIP_DOTS),
+                \RecursiveIteratorIterator::SELF_FIRST,
+            );
+            foreach ($items as $item) {
+                if (! $item->isLink()) {
+                    $paths[] = $item->getPathname();
+                }
+            }
+        }
+        foreach ($paths as $item) {
+            @chown($item, $owner);
+            @chgrp($item, $group);
         }
     }
 
