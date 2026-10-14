@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.0
+
+- Works with Pterodactyl v2.0.0-beta.1 (SDK beta.6).
+
 ## 1.0.1
 
 - Fixed guides breaking after the first scheduled sync on a standard install. The panel's scheduler runs from root's crontab, so the synced copy was owned by root and the web server could not read it ("Permission denied" on Sync now). Synced files now belong to the same user as the panel's storage folder. After updating, the next scheduled sync fixes the folder on its own.
