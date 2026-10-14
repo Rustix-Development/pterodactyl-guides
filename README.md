@@ -81,7 +81,7 @@ Open **Admin → Guides**.
 
 ## Requirements
 
-- Pterodactyl Panel 2.0 (2.0-develop or later)
+- Pterodactyl Panel v2.0.0-beta.1 or later
 - PHP 8.3+ with the zip extension (part of every panel install)
 - The panel's scheduler running every minute (the `schedule:run` cron entry from the panel install guide). It runs `guides:sync --due` every five minutes, which downloads a repo only once its interval has passed.
 - Outgoing HTTPS from the panel to `api.github.com` and `codeload.github.com`.
